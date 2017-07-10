@@ -6,10 +6,14 @@ Starter Project for Udacity VRND-Term 2.
 
 [Project Write Up on Medium](https://medium.com/@fsolari3k/vapor-room-mobile-vr-puzzle-write-up-184b1b9b9231)
 
-# Supported OS
-*iOs
+# Requirements
 
-*Android
+* Google Cardboard
+
+* iPhone 5 or later, iOS 8+
+
+* Android 2.2.2+
+
 
 # Credits
 
