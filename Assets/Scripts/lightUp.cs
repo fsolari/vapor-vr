@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class lightUp : MonoBehaviour {
+public class lightUp : MonoBehaviour, TimedInputHandler {
 	public Material lightUpMaterial;
 	public GameObject gameLogic;
 	private Material defaultMaterial;
@@ -32,7 +32,8 @@ public class lightUp : MonoBehaviour {
 
 
 	}
-	public void playerSelection() {
+		
+	public void HandleTimedInput() {
 		gameLogic.GetComponent<GameLogic>().playerSelection(this.gameObject);
 		this.GetComponent<GvrAudioSource>().Play();
 	}
