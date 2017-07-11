@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameLogic : MonoBehaviour {
+public class GameLogic : MonoBehaviour, TimedInputHandler {
 
 	public GameObject player;
 	public GameObject eventSystem;
@@ -12,6 +12,7 @@ public class GameLogic : MonoBehaviour {
 	public GameObject failAudioHolder;
 	public GameObject successAudioHolder;
 	public GameObject startAudioHolder;
+	public GameObject GameUI;
 
 	public int puzzleLength = 5; //How many times we light up.  This is the difficulty factor.  The longer it is the more you have to memorize in-game.
 	public float puzzleSpeed = 1f; //How many seconds between puzzle display pulses
@@ -64,13 +65,13 @@ public class GameLogic : MonoBehaviour {
 
 	}
 
-	 void HandleTimedInput(){
+	public void HandleTimedInput(){
+		GameUI.SetActive (false);
 	}
 
 	public void startPuzzle() { //Begin the puzzle sequence
 		//Generate a random number one through five, save it in an array.  Do this n times.
 		//Step through the array for displaying the puzzle, and checking puzzle failure or success.
-		HandleTimedInput();
 		startUI.SetActive (false);
 		eventSystem.SetActive(false);
 		iTween.MoveTo (player, playPoint.transform.position, 5f);
@@ -78,7 +79,6 @@ public class GameLogic : MonoBehaviour {
 		CancelInvoke ("displayPattern");
 		InvokeRepeating("displayPattern", 3, puzzleSpeed); //Start running through the displaypattern function
 		currentSolveIndex = 0; //Set our puzzle index at 0
-
 	}
 
 	void displayPattern() { //Invoked repeating.
@@ -95,7 +95,8 @@ public class GameLogic : MonoBehaviour {
 				currentlyDisplayingPattern = false; //Let us know were done displaying the pattern
 				currentDisplayIndex = 0;
 				CancelInvoke(); //Stop the pattern display.  May be better to use coroutines for this but oh well
-				eventSystem.SetActive(true); //Enable gaze input when we aren't displaying the pattern.
+				eventSystem.SetActive(true);
+				GameUI.SetActive (true);//Enable gaze input when we aren't displaying the pattern.
 			}
 		}
 	}
@@ -125,7 +126,6 @@ public class GameLogic : MonoBehaviour {
 		restartUI.SetActive (false);
 	}
 	public void resetGame() {
-		HandleTimedInput();
 		successAudioHolder.GetComponent<GvrAudioSource>().Stop();
 		handOk.SetActive(false);
 		restartUI.SetActive (false);

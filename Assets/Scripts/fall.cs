@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fall : MonoBehaviour {
+public class fall : MonoBehaviour, TimedInputHandler {
 
 	public void HandleTimedInput(){
 		FallDown ();
