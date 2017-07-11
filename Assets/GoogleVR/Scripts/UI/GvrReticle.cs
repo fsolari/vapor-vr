@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// Draws a circular reticle in front of any object that the user gazes at.
 /// The circle dilates if the object is clickable.
@@ -53,9 +54,13 @@ public class GvrReticle : MonoBehaviour, IGvrGazePointer {
   // before distance multiplication.
   private float reticleInnerDiameter = 0.0f;
   private float reticleOuterDiameter = 0.0f;
+  private float gazeTime;
+  private GameObject gazed;
 
   void Start () {
     CreateReticleVertices();
+		gazeTime = -1f;
+		gazed = null;
 
     materialComp = gameObject.GetComponent<Renderer>().material;
   }
@@ -93,6 +98,8 @@ public class GvrReticle : MonoBehaviour, IGvrGazePointer {
   public void OnGazeStart(Camera camera, GameObject targetObject, Vector3 intersectionPosition,
                           bool isInteractive) {
     SetGazeTarget(intersectionPosition, isInteractive);
+		gazed = targetObject;
+		gazeTime= Time.time;
   }
 
   /// Called every frame the user is still looking at a valid GameObject. This
@@ -104,6 +111,12 @@ public class GvrReticle : MonoBehaviour, IGvrGazePointer {
   public void OnGazeStay(Camera camera, GameObject targetObject, Vector3 intersectionPosition,
                          bool isInteractive) {
     SetGazeTarget(intersectionPosition, isInteractive);
+		if (gazed != null && gazeTime > 0f) {
+			if (Time.time - gazeTime > 2.0f && ExecuteEvents.CanHandleEvent<TimedInputHandler> (gazed)) {
+				gazeTime = -1f;
+				ExecuteEvents.Execute (gazed, null, (TimedInputHandler handler, BaseEventData data) => handler.HandleTimedInput ());
+			}
+		}
   }
 
   /// Called when the user's look no longer intersects an object previously

@@ -64,10 +64,13 @@ public class GameLogic : MonoBehaviour {
 
 	}
 
+	 void HandleTimedInput(){
+	}
 
 	public void startPuzzle() { //Begin the puzzle sequence
 		//Generate a random number one through five, save it in an array.  Do this n times.
 		//Step through the array for displaying the puzzle, and checking puzzle failure or success.
+		HandleTimedInput();
 		startUI.SetActive (false);
 		eventSystem.SetActive(false);
 		iTween.MoveTo (player, playPoint.transform.position, 5f);
@@ -122,6 +125,7 @@ public class GameLogic : MonoBehaviour {
 		restartUI.SetActive (false);
 	}
 	public void resetGame() {
+		HandleTimedInput();
 		successAudioHolder.GetComponent<GvrAudioSource>().Stop();
 		handOk.SetActive(false);
 		restartUI.SetActive (false);
